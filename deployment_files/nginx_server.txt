@@ -1,0 +1,31 @@
+upstream __proyecto___app_server {
+  server unix:/webapps/__proyecto__/run/gunicorn.sock fail_timeout=0;
+}
+ 
+server {
+ 
+    listen   80;
+    server_name __ip_or_domain__;
+ 
+    access_log /webapps/__proyecto__/logs/nginx-access.log;
+    error_log /webapps/__proyecto__/logs/nginx-error.log;
+ 
+    location /static/ {
+        alias   /webapps/__proyecto__/__proyecto__/staticfiles/;
+    }
+    
+    location /media/ {
+        alias   /webapps/__proyecto__/__proyecto__/media/;
+    }
+ 
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+
+        if (!-f $request_filename) {
+            proxy_pass http://__proyecto___app_server;
+            break;
+        }
+    }
+}

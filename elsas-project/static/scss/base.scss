@@ -1,0 +1,59 @@
+/****************************************************************
+/ GENERAL STYLING
+/****************************************************************/
+
+body {
+    margin: 0;
+
+    font-family: $f;
+    font-size: 1.40rem;
+    line-height: 1.25;
+    
+    // font rendering an aliasing
+    text-rendering: geometricPrecision;
+    font-smooth: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}  
+
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+p a{
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-transform: uppercase;
+    font-family: $falt;
+}
+
+
+
+/****************************************************************
+/ UTILITIES
+/****************************************************************/
+
+.lazy-image {
+    opacity: 0;
+    transition: opacity  0.6s ease;
+}
+
+.bg-cover{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg-contain{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.filter-grayscale{
+    filter: grayscale(100%);
+}

@@ -1,0 +1,59 @@
+.button {
+    display: inline-block;
+    cursor: pointer;
+    width: fit-content;
+
+    position: relative;
+
+    line-height: 43px;
+    height: 43px;
+    
+    * {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    border-width: 0.06rem;
+    border-style: solid;
+    border-radius: 0;
+
+    text-transform: uppercase;
+    font-weight: $sbold;
+    text-align: center;
+
+    transition: background-color 0.5s ease;
+}
+
+// colors
+
+.button-yellow { background-color: $yellow; }
+.button-violet { background-color: $violet; }
+.button-pink { background-color: $pink; }
+.button-green { background-color: $green; }
+
+.button-yellow:hover, 
+.button-yellow:active, 
+.button-yellow:focus {
+    background-color: $green;
+}
+
+.button-violet:hover, 
+.button-violet:active, 
+.button-violet:focus {
+    background-color: $pink;
+}
+
+.button-pink:hover, 
+.button-pink:active, 
+.button-pink:focus {
+    background-color: $violet;
+}
+
+.button-green:hover, 
+.button-green:active, 
+.button-green:focus {
+    background-color: $lightblue;
+}
