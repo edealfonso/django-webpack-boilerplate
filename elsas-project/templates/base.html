@@ -1,0 +1,42 @@
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            .hidden {
+              opacity: 0;
+            }
+        </style>
+
+        {% render_bundle 'main' 'css' %}
+
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+        
+        <title>
+            {% block title %}
+            {% endblock title %}
+        </title>
+    </head>
+
+    <body>
+        <script>document.body.classList+=' hidden';</script>
+
+        <header>
+            {% include 'includes/header.html' %}
+        </header>
+
+        {% block content %}
+        {% endblock content %}
+
+        <footer>
+            {% include 'includes/footer.html' %}
+        </footer>
+
+        {% render_bundle 'main' 'js' %}
+    </body>
+</html>

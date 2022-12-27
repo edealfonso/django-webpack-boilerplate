@@ -1,0 +1,51 @@
+@font-face {
+    font-family: 'Eingrantch Mono';
+    src: url('../fonts/EingrantchMono-Medium.eot');
+    src: url('../fonts/EingrantchMono-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/EingrantchMono-Medium.woff2') format('woff2'),
+        url('../fonts/EingrantchMono-Medium.woff') format('woff'),
+        url('../fonts/EingrantchMono-Medium.ttf') format('truetype'),
+        url('../fonts/EingrantchMono-Medium.svg#EingrantchMono-Medium') format('svg');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Eingrantch Mono';
+    src: url('../fonts/EingrantchMono-SemiBold.eot');
+    src: url('../fonts/EingrantchMono-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/EingrantchMono-SemiBold.woff2') format('woff2'),
+        url('../fonts/EingrantchMono-SemiBold.woff') format('woff'),
+        url('../fonts/EingrantchMono-SemiBold.ttf') format('truetype'),
+        url('../fonts/EingrantchMono-SemiBold.svg#EingrantchMono-SemiBold') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Eingrantch Mono';
+    src: url('../fonts/EingrantchMono-Bold.eot');
+    src: url('../fonts/EingrantchMono-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/EingrantchMono-Bold.woff2') format('woff2'),
+        url('../fonts/EingrantchMono-Bold.woff') format('woff'),
+        url('../fonts/EingrantchMono-Bold.ttf') format('truetype'),
+        url('../fonts/EingrantchMono-Bold.svg#EingrantchMono-Bold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Dela Gothic One';
+    src: url('../fonts/DelaGothicOne-Regular.eot');
+    src: url('../fonts/DelaGothicOne-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/DelaGothicOne-Regular.woff2') format('woff2'),
+        url('../fonts/DelaGothicOne-Regular.woff') format('woff'),
+        url('../fonts/DelaGothicOne-Regular.ttf') format('truetype'),
+        url('../fonts/DelaGothicOne-Regular.svg#DelaGothicOne-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

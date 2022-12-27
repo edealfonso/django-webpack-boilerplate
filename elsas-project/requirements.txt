@@ -1,0 +1,25 @@
+# MINIMUM
+
+wheel
+unipath
+Django
+django-webpack-loader
+# psycopg2
+psycopg2-binary
+
+# DJANGO MUSTS
+
+Pillow==8.1.1
+django-ckeditor
+django-admin-sortable
+
+# SOME DJANGO FAVOURITE PIPS
+
+# sorl-thumbnail
+# django-modeltranslation
+# django-autoslug
+# django-autocomplete-light
+# django-solo
+# django-clone
+# mailchimp3
+# git+https://github.com/svleeuwen/sortedm2m-filter-horizontal-widget.git
