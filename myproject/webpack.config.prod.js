@@ -15,7 +15,6 @@ module.exports = {
         filename: "[name]-[fullhash].js",
         clean: true,
     },
-    watch: true,
     mode: 'production',
     
 

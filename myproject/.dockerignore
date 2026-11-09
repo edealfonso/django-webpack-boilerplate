@@ -1,0 +1,14 @@
+.git
+.env
+.env.*
+!.env.example
+**/__pycache__
+**/*.py[cod]
+venv
+.venv
+node_modules
+static/bundles
+webpack-stats.json
+staticfiles
+media
+.DS_Store

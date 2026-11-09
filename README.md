@@ -1,54 +1,181 @@
-# Django Webpack Boilerplate (EN)
+# Django Webpack Boilerplate
 
-## Content
+[English](#english) · [Español](#español)
 
-This boilerplate has two folders:
-- In `myproject` we have the Django project
-- In `deployment_files` we have some files that would help us in the deployment
-- In `manuals` we have some guidelines on how to use this boilerplate (numbered), and other useful info (not numbered)
+---
 
-## Notes 
+## English
 
-- The name given to the Django project is "myproject". You should replace it in all files by the name you want to give to your project.
-- In the project, we have generated 2 apps to start with ("Pages" and "Content"). It's only some code so you have an example, but might be used as a depart point for some.
-- Unfortunately, right now the manuals are only available in Spanish. I will woon translate!!
+Django 5.2 + Webpack 5 (Sass, Babel) + PostgreSQL, ready to run with Docker for both development and production.
 
-## Instructions
+### Contents
 
-I recommend starting by the numbered Markdown files (`*.md`) in `manuals` folder, in particular `1_CREAR_NUEVO_PROYECTO.md`.
+- `myproject/`: the Django project
+  - `config/`: settings (`base`, `local`, `prod`, `test`), urls, wsgi/asgi
+  - `apps/`: example apps (`pages`, `content`) to start from
+  - `static/`: Sass and JS sources (webpack builds them into `static/bundles/`)
+  - `templates/`: Django templates
+  - `Dockerfile`, `compose.yml` (dev), `compose.prod.yml` (prod), `docker/`
+- `manuals/`: guides in Spanish (they describe the classic, non-Docker setup)
+- `deployment_files/`: legacy gunicorn/supervisor/nginx configs for deploying without Docker
 
-## Tests
+### Requirements
 
-```
-cd myproject
-python manage.py test --settings=config.settings.test
-```
+[Docker](https://docs.docker.com/get-docker/) with Docker Compose v2. Nothing else (Python, Node, Postgres) is needed on your machine.
 
-No `.env`, Postgres or webpack build needed.
+### Starting a new project
 
-# Django Webpack Boilerplate (ES)
+1. Copy this repo and rename `myproject` everywhere to your project's name (folder, `package.json`, `compose*.yml` defaults, `.env.example`, admin titles in `config/urls.py`).
+2. Optionally copy `myproject/.env.example` to `myproject/.env`. In development every value has a default, so you can skip this step.
 
-## Contenido
+### Development
 
-Este boilerplate tiene dos carpetas:
-- En `myproject` tenemos el proyecto de Django
-- En `deployment_files` tenemos algunos archivos que nos ayudarán en el deployment
-- En `manuals` tenemos algunos manuales de como usar este boilerplate y otra información útil
+All commands are run from `myproject/`.
 
-## Notas 
-
-- Actualmente el nombre del proyecto es "myproject". Se tendría que buscar esta string en todos los archivos y reemplazarlo por el nombre que queramos dar a nuestro proyecto.
-- Dentro del proyecto, se han generado 2 apps para empezar ("Pages" y "Content"), que tendrían que trabajarse. Es sólo para tener código de referencia, pero puede servir de punto de partida para algunos.
-
-## Instrucciones
-
-Recomiendo empezar consultando los archivos de Markdown (`*.md`) en la carpeta `manuals`, en particular `1_CREAR_NUEVO_PROYECTO.md`.
-
-## Tests
-
-```
-cd myproject
-python manage.py test --settings=config.settings.test
+```bash
+docker compose up --build             # start db + web + assets
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py createsuperuser
 ```
 
-No hace falta `.env`, Postgres ni build de webpack.
+- Site: http://localhost:8000. Admin: http://localhost:8000/admin/
+- `web` runs `runserver` with the code bind-mounted, so Python and template changes reload automatically.
+- `assets` runs webpack in watch mode: Sass/JS changes are rebuilt into `static/bundles/`. On the very first start, wait until webpack finishes, or the page will fail because `webpack-stats.json` does not exist yet (`docker compose logs -f assets`).
+- The database lives in the `pgdata` volume. `docker compose down -v` wipes it.
+
+Useful commands:
+
+```bash
+docker compose exec web python manage.py makemigrations
+docker compose exec web python manage.py shell
+docker compose run --rm assets npm install some-package   # add a JS dependency
+docker compose build web                                   # after changing requirements.txt
+docker compose logs -f web
+```
+
+Port conflicts: set `WEB_PORT=8001` (in `.env` or inline, e.g. `WEB_PORT=8001 docker compose up`). The database port is not published to the host. Uncomment `ports` under `db` in `compose.yml` if you need to reach it from a DB client.
+
+### Tests
+
+```bash
+docker compose exec web python manage.py test --settings=config.settings.test
+```
+
+`config.settings.test` uses in-memory SQLite and a fake webpack loader, so tests need neither Postgres nor a webpack build.
+
+### Production
+
+```bash
+cp .env.example .env    # then set SECRET_KEY, POSTGRES_*, ALLOWED_HOSTS (and CSRF_TRUSTED_ORIGINS)
+docker compose -f compose.prod.yml up -d --build
+docker compose -f compose.prod.yml exec web python manage.py createsuperuser
+```
+
+- `web`: multi-stage image (webpack production build + Python), gunicorn as a non-root user. `migrate` and `collectstatic` run on every start.
+- `nginx`: listens on port 80 (`HTTP_PORT` to change it), serves `/static/` and `/media/` and proxies everything else to gunicorn.
+- `db`: PostgreSQL with data in the `pgdata` volume. Uploaded files live in the `media` volume. Back both up.
+- HTTPS is not included: terminate TLS in front of this stack (host nginx + certbot, Caddy, Traefik, or your provider's load balancer).
+
+To update: `git pull && docker compose -f compose.prod.yml up -d --build`.
+
+### Configuration (`.env`)
+
+| Variable | Dev | Prod | Notes |
+|---|---|---|---|
+| `SECRET_KEY` | optional | **required** | `docker compose run --rm web python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` |
+| `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | optional | **required** | Used by the `db` container and to build `DATABASE_URL`. Avoid `@ : / ? #` in the password. |
+| `ALLOWED_HOSTS` | optional | **required** | Comma-separated |
+| `CSRF_TRUSTED_ORIGINS` | – | recommended | e.g. `https://example.com,https://www.example.com` |
+| `WEB_PORT` / `HTTP_PORT` | optional | optional | Host ports (dev: 8000, prod: 80) |
+| `DATABASE_URL` | – | – | Set by compose. Only needed when running Django outside Docker. |
+
+Never commit `.env`.
+
+---
+
+## Español
+
+Django 5.2 + Webpack 5 (Sass, Babel) + PostgreSQL, listo para arrancar con Docker tanto en desarrollo como en producción.
+
+### Contenido
+
+- `myproject/`: el proyecto de Django
+  - `config/`: settings (`base`, `local`, `prod`, `test`), urls, wsgi/asgi
+  - `apps/`: apps de ejemplo (`pages`, `content`) como punto de partida
+  - `static/`: fuentes de Sass y JS (webpack las compila en `static/bundles/`)
+  - `templates/`: plantillas de Django
+  - `Dockerfile`, `compose.yml` (desarrollo), `compose.prod.yml` (producción), `docker/`
+- `manuals/`: guías (describen la instalación clásica, sin Docker)
+- `deployment_files/`: configuración antigua de gunicorn/supervisor/nginx para desplegar sin Docker
+
+### Requisitos
+
+[Docker](https://docs.docker.com/get-docker/) con Docker Compose v2. No hace falta tener instalado nada más (ni Python, ni Node, ni Postgres).
+
+### Empezar un proyecto nuevo
+
+1. Copiar este repo y cambiar `myproject` por el nombre de tu proyecto en todas partes (carpeta, `package.json`, valores por defecto de `compose*.yml`, `.env.example`, títulos del admin en `config/urls.py`).
+2. Opcionalmente, copiar `myproject/.env.example` a `myproject/.env`. En desarrollo todo tiene valor por defecto, así que este paso se puede saltar.
+
+### Desarrollo
+
+Todos los comandos se ejecutan desde `myproject/`.
+
+```bash
+docker compose up --build             # arranca db + web + assets
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py createsuperuser
+```
+
+- Web: http://localhost:8000. Admin: http://localhost:8000/admin/
+- `web` ejecuta `runserver` con el código montado como volumen: los cambios en Python y en las plantillas se recargan solos.
+- `assets` ejecuta webpack en modo watch: los cambios en Sass/JS se recompilan en `static/bundles/`. La primera vez hay que esperar a que webpack termine; si no, la página da error porque todavía no existe `webpack-stats.json` (`docker compose logs -f assets`).
+- La base de datos vive en el volumen `pgdata`. `docker compose down -v` la borra.
+
+Comandos útiles:
+
+```bash
+docker compose exec web python manage.py makemigrations
+docker compose exec web python manage.py shell
+docker compose run --rm assets npm install some-package   # añadir una dependencia JS
+docker compose build web                                   # después de cambiar requirements.txt
+docker compose logs -f web
+```
+
+Si el puerto está ocupado, usa `WEB_PORT=8001` (en `.env` o en la propia línea, por ejemplo `WEB_PORT=8001 docker compose up`). El puerto de la base de datos no se publica en el host. Si necesitas conectarte con un cliente de BD, descomenta `ports` en el servicio `db` de `compose.yml`.
+
+### Tests
+
+```bash
+docker compose exec web python manage.py test --settings=config.settings.test
+```
+
+`config.settings.test` usa SQLite en memoria y un loader falso de webpack, así que los tests no necesitan ni Postgres ni el build de webpack.
+
+### Producción
+
+```bash
+cp .env.example .env    # y rellenar SECRET_KEY, POSTGRES_*, ALLOWED_HOSTS (y CSRF_TRUSTED_ORIGINS)
+docker compose -f compose.prod.yml up -d --build
+docker compose -f compose.prod.yml exec web python manage.py createsuperuser
+```
+
+- `web`: imagen multi-stage (build de producción de webpack + Python), gunicorn con usuario no-root. `migrate` y `collectstatic` se ejecutan en cada arranque.
+- `nginx`: escucha en el puerto 80 (se cambia con `HTTP_PORT`), sirve `/static/` y `/media/` y pasa el resto a gunicorn.
+- `db`: PostgreSQL con los datos en el volumen `pgdata`. Los archivos subidos van al volumen `media`. Haz copias de seguridad de los dos.
+- HTTPS no está incluido: hay que terminar TLS delante de este stack (nginx del host + certbot, Caddy, Traefik o el balanceador del proveedor).
+
+Para actualizar: `git pull && docker compose -f compose.prod.yml up -d --build`.
+
+### Configuración (`.env`)
+
+| Variable | Dev | Prod | Notas |
+|---|---|---|---|
+| `SECRET_KEY` | opcional | **obligatoria** | `docker compose run --rm web python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` |
+| `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | opcional | **obligatoria** | Las usa el contenedor `db` y sirven para construir `DATABASE_URL`. Evita `@ : / ? #` en la contraseña. |
+| `ALLOWED_HOSTS` | opcional | **obligatoria** | Separadas por comas |
+| `CSRF_TRUSTED_ORIGINS` | – | recomendada | p. ej. `https://example.com,https://www.example.com` |
+| `WEB_PORT` / `HTTP_PORT` | opcional | opcional | Puertos del host (dev: 8000, prod: 80) |
+| `DATABASE_URL` | – | – | La pone compose. Solo hace falta si ejecutas Django fuera de Docker. |
+
+Nunca subas el `.env` al repo.
