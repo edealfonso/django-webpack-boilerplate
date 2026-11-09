@@ -1,4 +1,4 @@
-"""elsas-project URL Configuration
+"""myproject URL Configuration
 """
 from django.contrib import admin
 from django.urls import path, include
@@ -17,6 +17,6 @@ urlpatterns = [
 
 
 # Title change
-admin.site.site_header = "elsas-project"
+admin.site.site_header = "myproject"
 admin.site.index_title = "Back-End Admin"
-admin.site.site_title = "elsas-project"
+admin.site.site_title = "myproject"

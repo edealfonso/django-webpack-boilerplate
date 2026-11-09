@@ -10,7 +10,7 @@ from apps.pages.models import *
 # Create your views here
 
 class LandingView(TemplateView):
-    template_name = 'landing.html'
+    template_name = 'home.html'
 
     # def get_context_data(self, **kwargs):
 

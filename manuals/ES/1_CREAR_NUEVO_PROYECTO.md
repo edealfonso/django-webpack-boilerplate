@@ -8,7 +8,7 @@ pip3 install django
 
 ## VIA 1: Copiar esta plantilla
 
-Copiar plantilla, cambiar la palabra "elsas-project" por el nombre de tu proyecto en todos los archivos.
+Copiar plantilla, cambiar la palabra "myproject" por el nombre de tu proyecto en todos los archivos.
 
 Copiar `.env.example` a `.env` y rellenarlo. Generar una SECRET_KEY nueva con: `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`
 

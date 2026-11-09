@@ -1,5 +1,5 @@
 """
-elsas-project SETTINGS
+myproject SETTINGS
 """
 
 import os
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'elsas-project.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -82,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'elsas-project.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 
