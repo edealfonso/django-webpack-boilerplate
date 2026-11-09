@@ -106,6 +106,12 @@ To update: `git pull && docker compose -f compose.prod.yml up -d --build`.
 
 Never commit `.env`.
 
+### Roadmap
+
+- [ ] CI with GitHub Actions: run the tests and build the Docker images on every push
+- [ ] [Ruff](https://docs.astral.sh/ruff/) as Python linter and formatter
+- [ ] Dependabot: automatic update PRs for pip, npm and Docker images
+
 ---
 
 ## Español
@@ -209,3 +215,10 @@ Para actualizar: `git pull && docker compose -f compose.prod.yml up -d --build`.
 | `DATABASE_URL` | – | – | La pone compose. Solo hace falta si ejecutas Django fuera de Docker. |
 
 Nunca subas el `.env` al repo.
+
+
+### Pendiente
+
+- [ ] CI con GitHub Actions: ejecutar los tests y construir las imágenes de Docker en cada push
+- [ ] [Ruff](https://docs.astral.sh/ruff/) como linter y formateador de Python
+- [ ] Dependabot: PRs automáticas de actualización para pip, npm e imágenes de Docker
