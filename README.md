@@ -16,8 +16,11 @@ Django 5.2 LTS + Webpack 5 (Sass, Babel) + PostgreSQL, with a rich text editor (
   - `static/`: Sass and JS sources (webpack builds them into `static/bundles/`)
   - `templates/`: Django templates
   - `Dockerfile`, `compose.yml` (dev), `compose.prod.yml` (prod), `docker/`
-- `manuals/`: guides in Spanish (they describe the classic, non-Docker setup)
-- `deployment_files/`: legacy gunicorn/supervisor/nginx configs for deploying without Docker
+- `manuals/ES/`: step-by-step guides in Spanish (all Docker-based)
+  - `1_CREAR_NUEVO_PROYECTO.md`: new project, apps, migrations, dependencies
+  - `2_DEPLOYMENT.md`: deploying to a VPS with HTTPS (host nginx + certbot)
+  - `BASES_DE_DATOS_POSTGRES.md`: psql, dumps, restore, CSV import
+  - `TRANSLATE.md`: i18n and django-modeltranslation
 
 ### Requirements
 
@@ -83,7 +86,7 @@ docker compose -f compose.prod.yml exec web python manage.py createsuperuser
 - `web`: multi-stage image (webpack production build + Python), gunicorn as a non-root user. `migrate` and `collectstatic` run on every start.
 - `nginx`: listens on port 80 (`HTTP_PORT` to change it), serves `/static/` and `/media/` and proxies everything else to gunicorn.
 - `db`: PostgreSQL with data in the `pgdata` volume. Uploaded files live in the `media` volume. Back both up.
-- HTTPS is not included: terminate TLS in front of this stack (host nginx + certbot, Caddy, Traefik, or your provider's load balancer).
+- HTTPS is not included: terminate TLS in front of this stack (host nginx + certbot, Caddy, Traefik, or your provider's load balancer). Step-by-step guide with host nginx + certbot: `manuals/ES/2_DEPLOYMENT.md`. Set `HTTP_PORT=127.0.0.1:8080` so the stack is only reachable through that proxy.
 
 To update: `git pull && docker compose -f compose.prod.yml up -d --build`.
 
@@ -116,8 +119,11 @@ Django 5.2 LTS + Webpack 5 (Sass, Babel) + PostgreSQL, con editor de texto enriq
   - `static/`: fuentes de Sass y JS (webpack las compila en `static/bundles/`)
   - `templates/`: plantillas de Django
   - `Dockerfile`, `compose.yml` (desarrollo), `compose.prod.yml` (producción), `docker/`
-- `manuals/`: guías (describen la instalación clásica, sin Docker)
-- `deployment_files/`: configuración antigua de gunicorn/supervisor/nginx para desplegar sin Docker
+- `manuals/ES/`: guías paso a paso (todas con Docker)
+  - `1_CREAR_NUEVO_PROYECTO.md`: proyecto nuevo, apps, migraciones, dependencias
+  - `2_DEPLOYMENT.md`: deployment en un VPS con HTTPS (nginx del host + certbot)
+  - `BASES_DE_DATOS_POSTGRES.md`: psql, dumps, restaurar, importar CSV
+  - `TRANSLATE.md`: traducciones e i18n con django-modeltranslation
 
 ### Requisitos
 
@@ -183,7 +189,7 @@ docker compose -f compose.prod.yml exec web python manage.py createsuperuser
 - `web`: imagen multi-stage (build de producción de webpack + Python), gunicorn con usuario no-root. `migrate` y `collectstatic` se ejecutan en cada arranque.
 - `nginx`: escucha en el puerto 80 (se cambia con `HTTP_PORT`), sirve `/static/` y `/media/` y pasa el resto a gunicorn.
 - `db`: PostgreSQL con los datos en el volumen `pgdata`. Los archivos subidos van al volumen `media`. Haz copias de seguridad de los dos.
-- HTTPS no está incluido: hay que terminar TLS delante de este stack (nginx del host + certbot, Caddy, Traefik o el balanceador del proveedor).
+- HTTPS no está incluido: hay que terminar TLS delante de este stack (nginx del host + certbot, Caddy, Traefik o el balanceador del proveedor). Guía paso a paso con nginx del host + certbot: `manuals/ES/2_DEPLOYMENT.md`. Pon `HTTP_PORT=127.0.0.1:8080` para que el stack solo sea accesible a través de ese proxy.
 
 Para actualizar: `git pull && docker compose -f compose.prod.yml up -d --build`.
 

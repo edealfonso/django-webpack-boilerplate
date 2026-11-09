@@ -1,176 +1,138 @@
-# Instrucciones para el deployment en servidor con NGINX
+# Deployment en un servidor (VPS) con Docker
 
-## 0. Entrar y actualizar servidor
+Este stack (`compose.prod.yml`) levanta **nginx + gunicorn + Postgres**. HTTPS se pone delante con el nginx del propio servidor y certbot (Let's Encrypt).
 
 ```
-sudo ssh root@__ip__
-sudo apt update
-sudo apt upgrade
+Internet ──443──> nginx del host (TLS, certbot) ──> 127.0.0.1:8080 ──> nginx (contenedor) ──> gunicorn
 ```
 
-Tal vez habrá que instalar:
-```
-sudo apt install postgresql postgresql-contrib
-```
+## 0. Preparar el servidor
 
-Si quieres, puedes configurar la SSH key para poder entrar en el servidor sin poner el password de usuario así:
+Entrar y actualizar (Ubuntu/Debian):
+
 ```bash
-ssh-copy-id root@__ip__
+ssh root@__ip__
+apt update && apt upgrade -y
 ```
 
+Recomendado: entrar con clave SSH en vez de contraseña:
 
-## 1. Crear entorno
-
-Creamos el entorno:
 ```bash
-cd /webapps
-python3 -m venv __proyecto__
+ssh-copy-id root@__ip__      # desde tu ordenador
 ```
 
-Entramos en él:
+Instalar Docker (incluye Compose): https://docs.docker.com/engine/install/ubuntu/ (o `curl -fsSL https://get.docker.com | sh`).
+
+## 1. Clonar el proyecto
+
 ```bash
-cd __proyecto__
-source bin/activate
+mkdir -p /webapps && cd /webapps
+git clone __repositorio__ __proyecto__
+cd __proyecto__/__carpeta_django__        # donde están compose.prod.yml y .env.example
 ```
 
+Para un repo privado, hay que crear antes una deploy key (`ssh-keygen -t ed25519`) y añadirla en GitHub/GitLab.
 
-## 2. Clonar git
+## 2. Configurar `.env`
 
-Clonamos repositorio:
 ```bash
-git clone __repositorio__
+cp .env.example .env
+nano .env
 ```
 
-Notas:
-- Es posible que haya que crear previamente la SSH key y asociar a usuario
-- Ver si hay que poner archivos que falten por gitignore (`.env`...)
+Valores mínimos:
 
-
-## 3. Instalar dependencias
-
-Si está creado el archivo `requirements.txt` podemos instalar dependencias así:
 ```bash
-pip install -r path_to_requirements.txt
+SECRET_KEY=__clave_larga_y_aleatoria__
+POSTGRES_DB=__proyecto__
+POSTGRES_USER=__proyecto__
+POSTGRES_PASSWORD=__contraseña_sin_@:/?#__
+ALLOWED_HOSTS=__dominio__,www.__dominio__
+CSRF_TRUSTED_ORIGINS=https://__dominio__,https://www.__dominio__
+HTTP_PORT=127.0.0.1:8080      # solo accesible desde el propio servidor (el nginx del host)
 ```
 
-Las dependencias mínimas para un proyecto de Django son:
-```
-wheel
-unipath
-django
-django-webpack-loader
-django-ckeditor
-django-admin-sortable
-pillow
-psycopg2-binary
-```
+Generar la `SECRET_KEY`:
 
-Notas:
-- Si intentamos instalar `psycopg2` en Linux a veces da problemas. En esos casos, la dependencia buena es `psycopg2-binary`.
-
-
-
-## 4. Crear base de datos
-
-- Crear db y usuario + entrar en base de datos
-```
-su postgres
-createdb __nombredb__
-```
-
-- Copiar dump (ver COSAS_DB.md): metemos el archivo de dump en el root del server.
 ```bash
-exit
-chmod a+r /__nombre_dump__.sql
-su postgres
-psql __nombre_db__ < __nombre_dump__.sql
+docker run --rm python:3.13-slim python -c "import secrets; print(secrets.token_urlsafe(50))"
 ```
 
-- Otorgar derechos a user
-```
-createuser __user__
-psql __nombredb__
-alter user __user__ with password '__pw__';
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO __user__;
-exit
-exit
-```
+## 3. Arrancar
 
-## 5. Gunicorn
-
-- Activar entorno
-- Instalar el PIP
-```
-pip install gunicorn
-```
-- Configurar
-```
-cd /webapps/__proyecto__/bin
-touch gunicorn_start
-```
-+ Meter contenido archivo "gunicorn_start.txt" (hasta la línea 10)
-- Darle permisos
-```
-chmod u+x gunicorn_start 
-```
-- Verificar funcionamiento
-```
-gunicorn_start
-```
-
-
-## 6. Supervisor
-
-- Instalar (si no lo está ya)
-```
-sudo apt install supervisor
-```
-- Configurar
-```
-cd /etc/supervisor/conf.d/
-touch __proyecto__.conf
-```
-+ Meter contenido archivo "supervisor.txt" (líneas 1,2,4)
-- Crear log
-```
-cd /webapps/__proyecto__
-mkdir logs
-touch logs/gunicorn_supervisor.log
-```
-- Cargar web
-```
-supervisorctl reread
-supervisorctl update
-```
-
-
-## 7. Configurar NGINX
-
-- Crear archivo de configuracion
-```
-cd /etc/nginx/sites-available
-touch __proyecto__
-```
-+ Meter contenido archivo "nginx_server.txt" (substituir `__proyecto__` y `__ip_or_domain__`)
-- Crear enlace simbólico
-```
-ln -s /etc/nginx/sites-available/__proyecto__ /etc/nginx/sites-enabled/__proyecto__
-service nginx restart
-```
-
-# Restarts
-
-- Nginx
 ```bash
-service nginx restart
-````
+docker compose -f compose.prod.yml up -d --build
+docker compose -f compose.prod.yml exec web python manage.py createsuperuser
+```
 
-- Supervisor
+`migrate` y `collectstatic` se ejecutan solos en cada arranque.
+
+Si tienes un dump de la base de datos, mira [BASES_DE_DATOS_POSTGRES.md](BASES_DE_DATOS_POSTGRES.md) para restaurarlo (con `-f compose.prod.yml`).
+
+## 4. HTTPS con nginx del host + certbot
+
 ```bash
-supervisorctl restart __proyecto__
+apt install -y nginx certbot python3-certbot-nginx
 ```
 
-- Server
+Crear `/etc/nginx/sites-available/__proyecto__`:
+
+```nginx
+server {
+    listen 80;
+    server_name __dominio__ www.__dominio__;
+
+    client_max_body_size 20M;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
 ```
-sudo reboot
+
+Activarlo y pedir el certificado (el DNS del dominio ya tiene que apuntar al servidor):
+
+```bash
+ln -s /etc/nginx/sites-available/__proyecto__ /etc/nginx/sites-enabled/
+nginx -t && systemctl reload nginx
+certbot --nginx -d __dominio__ -d www.__dominio__
 ```
+
+certbot añade el bloque 443, la redirección y la renovación automática.
+
+Cuando todo vaya por HTTPS, se puede activar HSTS poniendo en `.env` `SECURE_HSTS_SECONDS=3600` (y más adelante `31536000`) y reiniciando: `docker compose -f compose.prod.yml up -d`.
+
+> Varios proyectos en el mismo servidor: cada uno con su `HTTP_PORT` (`127.0.0.1:8080`, `127.0.0.1:8081`...) y su archivo en `sites-available`.
+
+## Actualizar
+
+```bash
+cd /webapps/__proyecto__/__carpeta_django__
+git pull
+docker compose -f compose.prod.yml up -d --build
+```
+
+## Comandos útiles
+
+```bash
+docker compose -f compose.prod.yml ps                 # estado
+docker compose -f compose.prod.yml logs -f web        # logs de Django/gunicorn
+docker compose -f compose.prod.yml logs -f nginx
+docker compose -f compose.prod.yml restart web
+docker compose -f compose.prod.yml exec web python manage.py shell
+```
+
+Los contenedores tienen `restart: unless-stopped`: vuelven a arrancar solos si se reinicia el servidor.
+
+## Copias de seguridad
+
+Los datos están en volúmenes de Docker: `pgdata` (base de datos) y `media` (archivos subidos).
+
+- Base de datos: ver [BASES_DE_DATOS_POSTGRES.md](BASES_DE_DATOS_POSTGRES.md).
+- Media:
+  ```bash
+  docker compose -f compose.prod.yml cp web:/app/media ./media-backup
+  ```
