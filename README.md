@@ -31,6 +31,12 @@ A starter template for Django projects with a modern frontend build. Instead of 
 
 No online demo: this is a template, not an app. The screenshot above shows what you get after `docker compose up` (Django admin with the example model enabled).
 
+### My contribution
+
+- Started from the boilerplate we used at the studio where I worked, and cleaned it up, removing everything that wasn't needed.
+- Wrote the step-by-step manuals (`manuals/ES/`).
+- In 2026 I updated and improved it with the help of [Claude Code](https://claude.com/claude-code): Docker for development and production, Django 5.2 LTS, security (secrets out of the repo, HTTPS settings), a modernized frontend build and documentation rewritten for Docker.
+
 ### Contents
 
 - `myproject/`: the Django project
@@ -161,6 +167,12 @@ Plantilla para empezar proyectos de Django con un frontend moderno. En lugar de 
 ### Demo
 
 No hay demo online: es una plantilla, no una aplicación. La captura de arriba muestra lo que obtienes tras `docker compose up` (el admin de Django con el modelo de ejemplo activado).
+
+### Qué he desarrollado yo
+
+- Partí de la boilerplate que usábamos en mi estudio y la limpié de todo lo innecesario.
+- Creé los manuales paso a paso (`manuals/ES/`).
+- En 2026 la actualicé y mejoré con la ayuda de [Claude Code](https://claude.com/claude-code): Docker para desarrollo y producción, Django 5.2 LTS, seguridad (secretos fuera del repo, ajustes de HTTPS), un build de frontend moderno y la documentación reescrita para Docker.
 
 ### Contenido
 
