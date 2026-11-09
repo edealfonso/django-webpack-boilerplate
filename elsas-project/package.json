@@ -1,8 +1,7 @@
 {
-    "name": "can",
+    "name": "myproject",
     "version": "1.0.0",
-    "description": "Web Contemporary Art Now",
-    "main": "script.js",
+    "description": "Django + Webpack boilerplate",
     "scripts": {
         "start": "webpack-dev-server --config webpack.config.js --mode development",
         "preview": "npm run build && http-server dist",
@@ -11,23 +10,8 @@
         "build": "webpack --progress --config webpack.config.prod.js",
         "clean": "rimraf static/bundles"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://gitlab.com/jacobfrancin/can.git"
-    },
-    "keywords": [
-        "can",
-        "Contemporary Art Now",
-        "urvanity",
-        "art",
-        "contemporary art"
-    ],
-    "author": "Maneko Team",
+    "author": "",
     "license": "ISC",
-    "bugs": {
-        "url": "https://gitlab.com/jacobfrancin/can/issues"
-    },
-    "homepage": "https://gitlab.com/jacobfrancin/can#readme",
     "devDependencies": {
         "@babel/core": "^7.14.8",
         "@babel/preset-env": "^7.14.9",
@@ -55,10 +39,11 @@
         "url-loader": "^4.1.1",
         "webpack": "^5.51.1",
         "webpack-bundle-tracker": "^1.4.0",
-        "webpack-cli": "^4.8.0"    
+        "webpack-cli": "^4.8.0"
     },
     "dependencies": {
         "jquery": "^3.6.0",
         "normalize.css": "^8.0.1"
-    }
+    },
+    "private": true
 }

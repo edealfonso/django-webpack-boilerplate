@@ -10,7 +10,7 @@ pip3 install django
 
 Copiar plantilla, cambiar la palabra "elsas-project" por el nombre de tu proyecto en todos los archivos.
 
-Generar clave secreta nueva para secret.json: https://djecrety.ir/
+Copiar `.env.example` a `.env` y rellenarlo. Generar una SECRET_KEY nueva con: `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`
 
 ## VIA 2: Crear proyecto y apps desde cero
 

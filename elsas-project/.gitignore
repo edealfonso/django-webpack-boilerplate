@@ -1,3 +1,15 @@
+# Environment / secrets
+
+.env
+secret.json
+
+# Python
+
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
 # Django
 
 media/
@@ -6,8 +18,8 @@ staticfiles/
 # NPM/webpack auto-generated files
 
 node_modules/
-package-lock.json
 webpack-stats.json
+static/bundles/
 
 # OS auto-generated files
 

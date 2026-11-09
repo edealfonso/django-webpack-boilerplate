@@ -4,6 +4,7 @@ wheel
 unipath
 Django
 django-webpack-loader
+django-environ
 # psycopg2
 psycopg2-binary
 

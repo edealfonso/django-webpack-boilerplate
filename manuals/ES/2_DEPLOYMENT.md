@@ -43,7 +43,7 @@ git clone __repositorio__
 
 Notas:
 - Es posible que haya que crear previamente la SSH key y asociar a usuario
-- Ver si hay que poner archivos que falten por gitignore (secret.json...)
+- Ver si hay que poner archivos que falten por gitignore (`.env`...)
 
 
 ## 3. Instalar dependencias

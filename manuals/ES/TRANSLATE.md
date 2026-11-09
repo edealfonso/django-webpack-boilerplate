@@ -63,7 +63,7 @@
 
 6. Cambiar el archivo `urls.py` general, tal que así:
     ```py
-    """qfactory URL Configuration
+    """myproject URL Configuration
     """
     from django.contrib import admin
     from django.urls import path, include, re_path
@@ -90,9 +90,9 @@
     )
 
     # Title change
-    admin.site.site_header = "QFACTORY"
+    admin.site.site_header = "myproject"
     admin.site.index_title = "Administrador de contenidos"
-    admin.site.site_title = "QFACTORY"
+    admin.site.site_title = "myproject"
     ```
 
 7. Para poner los selectores de idioma, se pone esto:

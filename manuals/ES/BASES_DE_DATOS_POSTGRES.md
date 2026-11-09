@@ -46,10 +46,10 @@ psql __nombre_db__ < __nombre_dump__.sql
 ## Cambiar admin de una DB
 ```bash
 su postgres
-CREATE USER qfactoryuser WITH PASSWORD 'xxxxx';
-psql qfactory -c "GRANT ALL ON ALL TABLES IN SCHEMA public to qfactoryuser;"
-psql qfactory -c "GRANT ALL ON ALL SEQUENCES IN SCHEMA public to qfactoryuser;"
-psql qfactory -c "GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to qfactoryuser;"
+CREATE USER myprojectuser WITH PASSWORD 'xxxxx';
+psql myproject -c "GRANT ALL ON ALL TABLES IN SCHEMA public to myprojectuser;"
+psql myproject -c "GRANT ALL ON ALL SEQUENCES IN SCHEMA public to myprojectuser;"
+psql myproject -c "GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to myprojectuser;"
 exit
 ```
 

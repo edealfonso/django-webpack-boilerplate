@@ -3,30 +3,21 @@ elsas-project SETTINGS
 """
 
 import os
-import json
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import environ
+
+# Build paths inside the project like this: BASE_DIR.child(...)
 from unipath import Path
 BASE_DIR = Path(__file__).ancestor(3)
 
+# Environment variables are read from the process environment and, if present,
+# from a `.env` file at the project root (see `.env.example`).
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open("secret.json") as f:
-    secret = json.loads(f.read())
-
-def get_secret(secret_name, secrets=secret):
-    try:
-        return secrets[secret_name]
-    except:
-        msg = "La variable %s no existe" % secret_name
-        raise ImproperlyConfigured(msg)
-
-
-SECRET_KEY = get_secret('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 
 
@@ -135,3 +126,33 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR.child('static')]
+STATIC_ROOT = BASE_DIR.child('staticfiles')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR.child('media')
+
+
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# DATABASE_URL format: postgres://USER:PASSWORD@HOST:PORT/NAME
+
+DATABASES = {
+    'default': env.db('DATABASE_URL'),
+}
+
+
+# WEBPACK LOADER
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    }
+}
