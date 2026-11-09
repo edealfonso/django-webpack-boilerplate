@@ -1,17 +1,18 @@
+// Entry stylesheet. Each partial pulls in what it needs with
+//   @use "variables" as *;   (or "../variables" from a subfolder)
+
 // Basics ----------------
-@import "reset";
-@import "fonts";
-@import "variables";
-@import "mixins";
-@import "base";
+@use "reset";
+@use "fonts";
+@use "base";
 
 // Sections ----------------
-@import "sections/header";
-@import "sections/footer";
+@use "sections/header";
+@use "sections/footer";
 
 // Components ----------------
-@import "components/buttons";
-@import "components/forms";
+@use "components/buttons";
+@use "components/forms";
 
 // Templates ----------------
-@import "templates/home";
+@use "templates/home";

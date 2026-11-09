@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG PYTHON_VERSION=3.13
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 
 
 # ---------------------------------------------------------------------------
@@ -12,7 +12,7 @@ FROM node:${NODE_VERSION}-slim AS assets
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
-COPY webpack.config.js webpack.config.prod.js ./
+COPY webpack.config.js postcss.config.js babel.config.json ./
 COPY static ./static
 RUN npm run build
 

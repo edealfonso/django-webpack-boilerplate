@@ -1,10 +1,8 @@
-require('normalize.css/normalize.css');
-require('../scss/index.scss');
+import 'normalize.css/normalize.css';
+import '../scss/index.scss';
 
 // write imports here
 
-(function () { $(function () {
-
-    // this code will run after document ready
-
-}); })();
+document.addEventListener('DOMContentLoaded', () => {
+    // this code will run after the DOM is ready
+});

@@ -55,6 +55,15 @@ docker compose logs -f web
 
 Port conflicts: set `WEB_PORT=8001` (in `.env` or inline, e.g. `WEB_PORT=8001 docker compose up`). The database port is not published to the host. Uncomment `ports` under `db` in `compose.yml` if you need to reach it from a DB client.
 
+### Frontend
+
+- Entry point: `static/js/script.js`. It imports `static/scss/index.scss`. Templates load the result with `{% render_bundle 'main' 'css' %}` / `{% render_bundle 'main' 'js' %}`.
+- One `webpack.config.js` for both modes: `npm run watch` (dev, run by the `assets` service) and `npm run build` (prod, run inside the Docker build).
+- Sass uses the module system: `index.scss` loads the partials with `@use`, and each partial loads what it needs with `@use "variables" as *;` (or `"../variables"` from a subfolder).
+- PostCSS (`postcss.config.js`) adds prefixes and modern CSS fallbacks. Babel (`babel.config.json`) transpiles JS. Both target the browsers in `browserslist` (`package.json`).
+- Fonts and images referenced from Sass are emitted to `static/bundles/assets/` with hashed names. Use `woff2` only.
+- No jQuery: plain JS. To add a library: `docker compose run --rm assets npm install <package>` and `import` it in `script.js`.
+
 ### Tests
 
 ```bash
@@ -145,6 +154,15 @@ docker compose logs -f web
 ```
 
 Si el puerto está ocupado, usa `WEB_PORT=8001` (en `.env` o en la propia línea, por ejemplo `WEB_PORT=8001 docker compose up`). El puerto de la base de datos no se publica en el host. Si necesitas conectarte con un cliente de BD, descomenta `ports` en el servicio `db` de `compose.yml`.
+
+### Frontend
+
+- Punto de entrada: `static/js/script.js`, que importa `static/scss/index.scss`. Las plantillas cargan el resultado con `{% render_bundle 'main' 'css' %}` / `{% render_bundle 'main' 'js' %}`.
+- Un solo `webpack.config.js` para los dos modos: `npm run watch` (desarrollo, lo ejecuta el servicio `assets`) y `npm run build` (producción, se ejecuta dentro del build de Docker).
+- Sass usa el sistema de módulos: `index.scss` carga los parciales con `@use`, y cada parcial carga lo que necesita con `@use "variables" as *;` (o `"../variables"` desde una subcarpeta).
+- PostCSS (`postcss.config.js`) añade prefijos y alternativas para CSS moderno. Babel (`babel.config.json`) transpila el JS. Los dos apuntan a los navegadores de `browserslist` (`package.json`).
+- Las fuentes e imágenes que se referencian desde Sass se generan en `static/bundles/assets/` con hash en el nombre. Usa solo `woff2`.
+- Sin jQuery: JS normal. Para añadir una librería: `docker compose run --rm assets npm install <paquete>` e importarla en `script.js`.
 
 ### Tests
 
