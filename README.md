@@ -33,7 +33,7 @@ No online demo: this is a template, not an app. The screenshot above shows what 
 
 ### My contribution
 
-- Started from the boilerplate we used at the studio where I worked, and cleaned it up, removing everything that wasn't needed.
+- Started from the boilerplate we used at my studio, and cleaned it up, removing everything that wasn't needed.
 - Wrote the step-by-step manuals (`manuals/ES/`).
 - In 2026 I updated and improved it with the help of [Claude Code](https://claude.com/claude-code): Docker for development and production, Django 5.2 LTS, security (secrets out of the repo, HTTPS settings), a modernized frontend build and documentation rewritten for Docker.
 
