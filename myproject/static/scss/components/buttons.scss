@@ -3,60 +3,37 @@
 
 .button {
     display: inline-block;
-    cursor: pointer;
-    width: fit-content;
+    padding: 0.6em 1.4em;
 
-    position: relative;
+    border: 1px solid $color-primary;
+    border-radius: 4px;
 
-    line-height: 43px;
-    height: 43px;
-    
-    * {
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-    }
-
-    border-width: 0.06rem;
-    border-style: solid;
-    border-radius: 0;
-
-    text-transform: uppercase;
-    font-weight: $sbold;
+    font-weight: $weight-bold;
     text-align: center;
+    text-decoration: none;
+    cursor: pointer;
 
-    transition: background-color 0.5s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-// colors
+.button--primary {
+    background-color: $color-primary;
+    color: #fff;
 
-.button-yellow { background-color: $yellow; }
-.button-violet { background-color: $violet; }
-.button-pink { background-color: $pink; }
-.button-green { background-color: $green; }
-
-.button-yellow:hover, 
-.button-yellow:active, 
-.button-yellow:focus {
-    background-color: $green;
+    &:hover,
+    &:focus-visible {
+        background-color: $color-primary-hover;
+        border-color: $color-primary-hover;
+    }
 }
 
-.button-violet:hover, 
-.button-violet:active, 
-.button-violet:focus {
-    background-color: $pink;
-}
+.button--secondary {
+    background-color: transparent;
+    color: $color-primary;
 
-.button-pink:hover, 
-.button-pink:active, 
-.button-pink:focus {
-    background-color: $violet;
-}
-
-.button-green:hover, 
-.button-green:active, 
-.button-green:focus {
-    background-color: $lightblue;
+    &:hover,
+    &:focus-visible {
+        background-color: $color-primary;
+        color: #fff;
+    }
 }

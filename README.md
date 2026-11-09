@@ -14,7 +14,7 @@ Django 5.2 LTS + Webpack 5 (Sass, Babel) + PostgreSQL, with a rich text editor (
   - `config/`: settings (`base`, `local`, `prod`, `test`), urls, wsgi/asgi
   - `apps/`: example apps (`pages`, `content`) to start from. `models.py`/`admin.py` include a commented example using the editor and sortable admin
   - `static/`: Sass and JS sources (webpack builds them into `static/bundles/`)
-  - `templates/`: Django templates
+  - `templates/`: Django templates (`templates/admin/base_site.html` adds `static/admin-custom/admin.css` to the admin)
   - `Dockerfile`, `compose.yml` (dev), `compose.prod.yml` (prod), `docker/`
 - `manuals/ES/`: step-by-step guides in Spanish (all Docker-based)
   - `1_CREAR_NUEVO_PROYECTO.md`: new project, apps, migrations, dependencies
@@ -64,7 +64,8 @@ Port conflicts: set `WEB_PORT=8001` (in `.env` or inline, e.g. `WEB_PORT=8001 do
 - One `webpack.config.js` for both modes: `npm run watch` (dev, run by the `assets` service) and `npm run build` (prod, run inside the Docker build).
 - Sass uses the module system: `index.scss` loads the partials with `@use`, and each partial loads what it needs with `@use "variables" as *;` (or `"../variables"` from a subfolder).
 - PostCSS (`postcss.config.js`) adds prefixes and modern CSS fallbacks. Babel (`babel.config.json`) transpiles JS. Both target the browsers in `browserslist` (`package.json`).
-- Fonts and images referenced from Sass are emitted to `static/bundles/assets/` with hashed names. Use `woff2` only.
+- Neutral starting point: system font stack and a small palette in `variables.scss`. Webfonts go in `static/fonts/` (`woff2` only) and are declared in `fonts.scss`. Fonts and images referenced from Sass are emitted to `static/bundles/assets/` with hashed names.
+- Admin branding: uncomment the CSS variables in `static/admin-custom/admin.css`. Never copy Django's admin CSS files into `static/admin/`: they would override the admin's own CSS on every Django upgrade.
 - No jQuery: plain JS. To add a library: `docker compose run --rm assets npm install <package>` and `import` it in `script.js`.
 
 ### Tests
@@ -117,7 +118,7 @@ Django 5.2 LTS + Webpack 5 (Sass, Babel) + PostgreSQL, con editor de texto enriq
   - `config/`: settings (`base`, `local`, `prod`, `test`), urls, wsgi/asgi
   - `apps/`: apps de ejemplo (`pages`, `content`) como punto de partida. `models.py`/`admin.py` incluyen un ejemplo comentado con el editor y el admin ordenable
   - `static/`: fuentes de Sass y JS (webpack las compila en `static/bundles/`)
-  - `templates/`: plantillas de Django
+  - `templates/`: plantillas de Django (`templates/admin/base_site.html` añade `static/admin-custom/admin.css` al admin)
   - `Dockerfile`, `compose.yml` (desarrollo), `compose.prod.yml` (producción), `docker/`
 - `manuals/ES/`: guías paso a paso (todas con Docker)
   - `1_CREAR_NUEVO_PROYECTO.md`: proyecto nuevo, apps, migraciones, dependencias
@@ -167,7 +168,8 @@ Si el puerto está ocupado, usa `WEB_PORT=8001` (en `.env` o en la propia línea
 - Un solo `webpack.config.js` para los dos modos: `npm run watch` (desarrollo, lo ejecuta el servicio `assets`) y `npm run build` (producción, se ejecuta dentro del build de Docker).
 - Sass usa el sistema de módulos: `index.scss` carga los parciales con `@use`, y cada parcial carga lo que necesita con `@use "variables" as *;` (o `"../variables"` desde una subcarpeta).
 - PostCSS (`postcss.config.js`) añade prefijos y alternativas para CSS moderno. Babel (`babel.config.json`) transpila el JS. Los dos apuntan a los navegadores de `browserslist` (`package.json`).
-- Las fuentes e imágenes que se referencian desde Sass se generan en `static/bundles/assets/` con hash en el nombre. Usa solo `woff2`.
+- Punto de partida neutro: fuentes del sistema y una paleta mínima en `variables.scss`. Las webfonts van en `static/fonts/` (solo `woff2`) y se declaran en `fonts.scss`. Las fuentes e imágenes que se referencian desde Sass se generan en `static/bundles/assets/` con hash en el nombre.
+- Colores del admin: descomentar las variables CSS de `static/admin-custom/admin.css`. No copies nunca los CSS del admin de Django a `static/admin/`: sobrescribirían los del propio admin en cada actualización de Django.
 - Sin jQuery: JS normal. Para añadir una librería: `docker compose run --rm assets npm install <paquete>` e importarla en `script.js`.
 
 ### Tests

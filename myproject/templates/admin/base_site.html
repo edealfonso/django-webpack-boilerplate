@@ -1,0 +1,8 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{# Adds our stylesheet on top of Django's admin CSS (never copy/override the admin's own files) #}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin-custom/admin.css' %}">
+{% endblock %}

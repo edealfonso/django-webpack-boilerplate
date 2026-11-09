@@ -1,0 +1,48 @@
+/*
+ * Admin customization, loaded by templates/admin/base_site.html
+ * on top of Django's own admin CSS.
+ *
+ * Django's admin is themed with CSS variables:
+ * https://docs.djangoproject.com/en/5.2/ref/contrib/admin/#theming-support
+ */
+
+
+/* Brand colors (uncomment and adapt) --------------------------------- */
+
+/*
+:root {
+    --primary: #2563eb;
+    --secondary: #1e40af;
+    --accent: #f59e0b;
+    --header-bg: var(--secondary);
+    --header-link-color: #fff;
+    --link-fg: #2563eb;
+    --link-hover-color: #1e40af;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #3b82f6;
+    }
+}
+*/
+
+
+/* Image previews ------------------------------------------------------
+ * For ModelAdmin methods/readonly fields that render thumbnails, e.g.
+ *   format_html('<img class="admin-preview" src="{}">', obj.image.url)
+ */
+
+.admin-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.admin-preview--contain {
+    object-fit: contain;
+}
+
+a .admin-preview:hover {
+    opacity: 0.8;
+}
