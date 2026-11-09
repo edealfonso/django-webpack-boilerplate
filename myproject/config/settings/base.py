@@ -2,18 +2,17 @@
 myproject SETTINGS
 """
 
-import os
+from pathlib import Path
 
 import environ
 
-# Build paths inside the project like this: BASE_DIR.child(...)
-from unipath import Path
-BASE_DIR = Path(__file__).ancestor(3)
+# Build paths inside the project like this: BASE_DIR / 'subdir'
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Environment variables are read from the process environment and, if present,
 # from a `.env` file at the project root (see `.env.example`).
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(BASE_DIR / '.env')
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -40,8 +39,8 @@ THIRD_PARTY_APPS = (
     #'dal_select2',
     #'modeltranslation',
     'webpack_loader',
-    'ckeditor',
-    'adminsortable',
+    'django_prose_editor',
+    'adminsortable2',
     #'autoslug',
     #'sorl.thumbnail',
     #'solo',
@@ -66,9 +65,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
-        # 'DIRS': [],
-        'DIRS': [BASE_DIR.child('templates')],
+        'DIRS': [BASE_DIR / 'templates'],
 
         'APP_DIRS': True,
         'OPTIONS': {
@@ -89,7 +86,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -108,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'ca-es'
 
@@ -116,31 +113,29 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR.child('static')]
-STATIC_ROOT = BASE_DIR.child('staticfiles')
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR.child('media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 # DATABASE_URL format: postgres://USER:PASSWORD@HOST:PORT/NAME
 
 DATABASES = {
@@ -153,6 +148,6 @@ DATABASES = {
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'STATS_FILE': BASE_DIR / 'webpack-stats.json',
     }
 }

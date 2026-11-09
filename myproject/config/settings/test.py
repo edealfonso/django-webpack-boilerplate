@@ -16,6 +16,14 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['testserver']
 
+# Always use in-memory SQLite, even if DATABASE_URL is set (e.g. inside compose)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+    }
+}
+
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 
 # Render `render_bundle` tags without webpack-stats.json

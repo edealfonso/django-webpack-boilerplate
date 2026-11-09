@@ -6,13 +6,13 @@
 
 ## English
 
-Django 5.2 + Webpack 5 (Sass, Babel) + PostgreSQL, ready to run with Docker for both development and production.
+Django 5.2 LTS + Webpack 5 (Sass, Babel) + PostgreSQL, with a rich text editor ([django-prose-editor](https://github.com/matthiask/django-prose-editor)) and sortable admin lists ([django-admin-sortable2](https://github.com/jrief/django-admin-sortable2)), ready to run with Docker for both development and production.
 
 ### Contents
 
 - `myproject/`: the Django project
   - `config/`: settings (`base`, `local`, `prod`, `test`), urls, wsgi/asgi
-  - `apps/`: example apps (`pages`, `content`) to start from
+  - `apps/`: example apps (`pages`, `content`) to start from. `models.py`/`admin.py` include a commented example using the editor and sortable admin
   - `static/`: Sass and JS sources (webpack builds them into `static/bundles/`)
   - `templates/`: Django templates
   - `Dockerfile`, `compose.yml` (dev), `compose.prod.yml` (prod), `docker/`
@@ -86,6 +86,8 @@ To update: `git pull && docker compose -f compose.prod.yml up -d --build`.
 | `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | optional | **required** | Used by the `db` container and to build `DATABASE_URL`. Avoid `@ : / ? #` in the password. |
 | `ALLOWED_HOSTS` | optional | **required** | Comma-separated |
 | `CSRF_TRUSTED_ORIGINS` | – | recommended | e.g. `https://example.com,https://www.example.com` |
+| `SECURE_HTTPS` | – | optional | Default `True`: HTTPS redirect + secure cookies. Set `False` only to try the prod stack over plain HTTP. |
+| `SECURE_HSTS_SECONDS` | – | optional | Default `0`. Start with `3600`, raise to `31536000` once HTTPS is confirmed. |
 | `WEB_PORT` / `HTTP_PORT` | optional | optional | Host ports (dev: 8000, prod: 80) |
 | `DATABASE_URL` | – | – | Set by compose. Only needed when running Django outside Docker. |
 
@@ -95,13 +97,13 @@ Never commit `.env`.
 
 ## Español
 
-Django 5.2 + Webpack 5 (Sass, Babel) + PostgreSQL, listo para arrancar con Docker tanto en desarrollo como en producción.
+Django 5.2 LTS + Webpack 5 (Sass, Babel) + PostgreSQL, con editor de texto enriquecido ([django-prose-editor](https://github.com/matthiask/django-prose-editor)) y listados ordenables en el admin ([django-admin-sortable2](https://github.com/jrief/django-admin-sortable2)), listo para arrancar con Docker tanto en desarrollo como en producción.
 
 ### Contenido
 
 - `myproject/`: el proyecto de Django
   - `config/`: settings (`base`, `local`, `prod`, `test`), urls, wsgi/asgi
-  - `apps/`: apps de ejemplo (`pages`, `content`) como punto de partida
+  - `apps/`: apps de ejemplo (`pages`, `content`) como punto de partida. `models.py`/`admin.py` incluyen un ejemplo comentado con el editor y el admin ordenable
   - `static/`: fuentes de Sass y JS (webpack las compila en `static/bundles/`)
   - `templates/`: plantillas de Django
   - `Dockerfile`, `compose.yml` (desarrollo), `compose.prod.yml` (producción), `docker/`
@@ -175,6 +177,8 @@ Para actualizar: `git pull && docker compose -f compose.prod.yml up -d --build`.
 | `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | opcional | **obligatoria** | Las usa el contenedor `db` y sirven para construir `DATABASE_URL`. Evita `@ : / ? #` en la contraseña. |
 | `ALLOWED_HOSTS` | opcional | **obligatoria** | Separadas por comas |
 | `CSRF_TRUSTED_ORIGINS` | – | recomendada | p. ej. `https://example.com,https://www.example.com` |
+| `SECURE_HTTPS` | – | opcional | Por defecto `True`: redirección a HTTPS + cookies seguras. Ponerla a `False` solo para probar el stack de prod por HTTP. |
+| `SECURE_HSTS_SECONDS` | – | opcional | Por defecto `0`. Empezar con `3600` y subir a `31536000` cuando HTTPS esté confirmado. |
 | `WEB_PORT` / `HTTP_PORT` | opcional | opcional | Puertos del host (dev: 8000, prod: 80) |
 | `DATABASE_URL` | – | – | La pone compose. Solo hace falta si ejecutas Django fuera de Docker. |
 

@@ -1,17 +1,19 @@
-# MINIMUM
+# Compatible-release pins (~=): get bugfix/security releases, not breaking ones.
+# Check for updates with:  docker compose run --rm web pip list --outdated
 
-Django>=5.2,<5.3
-django-environ
-django-webpack-loader
-unipath
-psycopg[binary]
-gunicorn
+# CORE
+
+Django~=5.2.0               # LTS, supported until April 2028
+django-environ~=0.14.0
+django-webpack-loader~=3.2
+psycopg[binary]~=3.3
+gunicorn~=26.2
 
 # DJANGO MUSTS
 
-Pillow>=11
-django-ckeditor
-django-admin-sortable
+Pillow~=13.0
+django-prose-editor[sanitize]~=0.28.0   # rich text editor (Tiptap), HTML sanitized with nh3
+django-admin-sortable2~=2.4             # drag & drop ordering in the admin
 
 # SOME DJANGO FAVOURITE PIPS
 
@@ -22,4 +24,3 @@ django-admin-sortable
 # django-solo
 # django-clone
 # mailchimp3
-# git+https://github.com/svleeuwen/sortedm2m-filter-horizontal-widget.git
