@@ -12,7 +12,7 @@ Referencia para trabajar con el boilerplate. Para arrancar rápido, mira el [REA
   - `static/`: fuentes de Sass y JS (webpack las compila en `static/bundles/`)
   - `templates/`: plantillas de Django (`templates/admin/base_site.html` añade `static/admin-custom/admin.css` al admin)
   - `Dockerfile`, `compose.yml` (desarrollo), `compose.prod.yml` (producción), `docker/`
-- `manuals/ES/`: guías paso a paso (todas con Docker)
+- `docs/manuals/ES/`: guías paso a paso (todas con Docker)
   - `1_CREAR_NUEVO_PROYECTO.md`: proyecto nuevo, apps, migraciones, dependencias
   - `2_DEPLOYMENT.md`: deployment en un VPS con HTTPS (nginx del host + certbot)
   - `BASES_DE_DATOS_POSTGRES.md`: psql, dumps, restaurar, importar CSV
@@ -81,7 +81,7 @@ docker compose -f compose.prod.yml exec web python manage.py createsuperuser
 - `web`: imagen multi-stage (build de producción de webpack + Python), gunicorn con usuario no-root. `migrate` y `collectstatic` se ejecutan en cada arranque.
 - `nginx`: escucha en el puerto 80 (se cambia con `HTTP_PORT`), sirve `/static/` y `/media/` y pasa el resto a gunicorn.
 - `db`: PostgreSQL con los datos en el volumen `pgdata`. Los archivos subidos van al volumen `media`. Haz copias de seguridad de los dos.
-- HTTPS no está incluido: hay que terminar TLS delante de este stack (nginx del host + certbot, Caddy, Traefik o el balanceador del proveedor). Guía paso a paso con nginx del host + certbot: `[manuals/ES/2_DEPLOYMENT.md](../manuals/ES/2_DEPLOYMENT.md)`. Pon `HTTP_PORT=127.0.0.1:8080` para que el stack solo sea accesible a través de ese proxy.
+- HTTPS no está incluido: hay que terminar TLS delante de este stack (nginx del host + certbot, Caddy, Traefik o el balanceador del proveedor). Guía paso a paso con nginx del host + certbot: [2_DEPLOYMENT.md](manuals/ES/2_DEPLOYMENT.md). Pon `HTTP_PORT=127.0.0.1:8080` para que el stack solo sea accesible a través de ese proxy.
 
 Para actualizar: `git pull && docker compose -f compose.prod.yml up -d --build`.
 

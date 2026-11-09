@@ -36,12 +36,12 @@ docker compose exec web python manage.py migrate
 docker compose exec web python manage.py createsuperuser
 ```
 
-Abre http://localhost:8000 (el admin está en `/admin/`). Para empezar tu propio proyecto, cambia `myproject` por tu nombre en todas partes ([guía](manuals/ES/1_CREAR_NUEVO_PROYECTO.md)).
+Abre http://localhost:8000 (el admin está en `/admin/`). Para empezar tu propio proyecto, cambia `myproject` por tu nombre en todas partes ([guía](docs/manuals/ES/1_CREAR_NUEVO_PROYECTO.md)).
 
 ## Documentación
 
 - [Referencia de uso](docs/USAGE.es.md): estructura del proyecto, desarrollo, frontend, tests, producción y variables de `.env`.
-- Guías paso a paso: [proyecto nuevo](manuals/ES/1_CREAR_NUEVO_PROYECTO.md), [deployment en un VPS con HTTPS](manuals/ES/2_DEPLOYMENT.md), [Postgres](manuals/ES/BASES_DE_DATOS_POSTGRES.md), [traducciones](manuals/ES/TRANSLATE.md).
+- Guías paso a paso: [proyecto nuevo](docs/manuals/ES/1_CREAR_NUEVO_PROYECTO.md), [deployment en un VPS con HTTPS](docs/manuals/ES/2_DEPLOYMENT.md), [Postgres](docs/manuals/ES/BASES_DE_DATOS_POSTGRES.md), [traducciones](docs/manuals/ES/TRANSLATE.md).
 
 ## Demo
 
@@ -50,7 +50,7 @@ No hay demo online: es una plantilla, no una aplicación. La captura de arriba m
 ## Qué he desarrollado yo
 
 - Partí de la boilerplate que usábamos en mi estudio y la limpié de todo lo innecesario.
-- Creé los manuales paso a paso (`manuals/ES/`).
+- Creé los manuales paso a paso (`docs/manuals/ES/`).
 - En 2026 la actualicé y mejoré con la ayuda de [Claude Code](https://claude.com/claude-code): Docker para desarrollo y producción, Django 5.2 LTS, seguridad (secretos fuera del repo, ajustes de HTTPS), un build de frontend moderno y la documentación reescrita para Docker.
 
 ## Pendiente

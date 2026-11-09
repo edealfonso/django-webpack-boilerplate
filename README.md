@@ -41,7 +41,7 @@ Open http://localhost:8000 (admin at `/admin/`). To start your own project, rena
 ## Documentation
 
 - [Usage reference](docs/USAGE.md): project structure, development, frontend, tests, production and `.env` settings.
-- Step-by-step guides (in Spanish): [new project](manuals/ES/1_CREAR_NUEVO_PROYECTO.md), [VPS deployment with HTTPS](manuals/ES/2_DEPLOYMENT.md), [Postgres](manuals/ES/BASES_DE_DATOS_POSTGRES.md), [translations](manuals/ES/TRANSLATE.md).
+- Step-by-step guides (in Spanish): [new project](docs/manuals/ES/1_CREAR_NUEVO_PROYECTO.md), [VPS deployment with HTTPS](docs/manuals/ES/2_DEPLOYMENT.md), [Postgres](docs/manuals/ES/BASES_DE_DATOS_POSTGRES.md), [translations](docs/manuals/ES/TRANSLATE.md).
 
 ## Demo
 
@@ -50,7 +50,7 @@ No online demo: this is a template, not an app. The screenshot above shows what 
 ## My contribution
 
 - Started from the boilerplate we used at my studio, and cleaned it up, removing everything that wasn't needed.
-- Wrote the step-by-step manuals (`manuals/ES/`).
+- Wrote the step-by-step manuals (`docs/manuals/ES/`).
 - In 2026 I updated and improved it with the help of [Claude Code](https://claude.com/claude-code): Docker for development and production, Django 5.2 LTS, security (secrets out of the repo, HTTPS settings), a modernized frontend build and documentation rewritten for Docker.
 
 ## Roadmap

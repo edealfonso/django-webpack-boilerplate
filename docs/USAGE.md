@@ -12,7 +12,7 @@ Reference for working with the boilerplate. Quick start: see the [README](../REA
   - `static/`: Sass and JS sources (webpack builds them into `static/bundles/`)
   - `templates/`: Django templates (`templates/admin/base_site.html` adds `static/admin-custom/admin.css` to the admin)
   - `Dockerfile`, `compose.yml` (dev), `compose.prod.yml` (prod), `docker/`
-- `manuals/ES/`: step-by-step guides in Spanish (all Docker-based)
+- `docs/manuals/ES/`: step-by-step guides in Spanish (all Docker-based)
   - `1_CREAR_NUEVO_PROYECTO.md`: new project, apps, migrations, dependencies
   - `2_DEPLOYMENT.md`: deploying to a VPS with HTTPS (host nginx + certbot)
   - `BASES_DE_DATOS_POSTGRES.md`: psql, dumps, restore, CSV import
@@ -81,7 +81,7 @@ docker compose -f compose.prod.yml exec web python manage.py createsuperuser
 - `web`: multi-stage image (webpack production build + Python), gunicorn as a non-root user. `migrate` and `collectstatic` run on every start.
 - `nginx`: listens on port 80 (`HTTP_PORT` to change it), serves `/static/` and `/media/` and proxies everything else to gunicorn.
 - `db`: PostgreSQL with data in the `pgdata` volume. Uploaded files live in the `media` volume. Back both up.
-- HTTPS is not included: terminate TLS in front of this stack (host nginx + certbot, Caddy, Traefik, or your provider's load balancer). Step-by-step guide with host nginx + certbot: `[manuals/ES/2_DEPLOYMENT.md](../manuals/ES/2_DEPLOYMENT.md)`. Set `HTTP_PORT=127.0.0.1:8080` so the stack is only reachable through that proxy.
+- HTTPS is not included: terminate TLS in front of this stack (host nginx + certbot, Caddy, Traefik, or your provider's load balancer). Step-by-step guide with host nginx + certbot: [2_DEPLOYMENT.md](manuals/ES/2_DEPLOYMENT.md). Set `HTTP_PORT=127.0.0.1:8080` so the stack is only reachable through that proxy.
 
 To update: `git pull && docker compose -f compose.prod.yml up -d --build`.
 
